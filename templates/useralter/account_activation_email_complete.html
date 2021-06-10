@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block title %}
+    {% trans "User email address confirmation complete" %} - www.alter-link.com
+{% endblock title %}
+
+{% block body %}
+
+<h1>{% trans "Thank you. User email address confirmation complete." %}</h1>
+<p>{% trans "You can now "%}<a href="{% url 'login' %}">{% trans "log in" %}</a></p>
+
+
+{% endblock body %}

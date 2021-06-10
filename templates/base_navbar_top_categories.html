@@ -1,0 +1,65 @@
+{% load static %}
+{% load i18n %}
+{% load verbose_name %}
+{% load crispy_forms_tags %}
+
+{% comment %} 
+    navbar color changer 
+    https://stackoverflow.com/questions/18529274/change-navbar-color-in-twitter-bootstrap
+    https://work.smarchal.com/twbscolor/css/e74c3cc0392becf0f1ffbbbc0 
+{% endcomment %}
+
+{% comment %}
+    horizontal scroll of category navbar
+    idea from https://stackoverflow.com/questions/27390807/how-to-create-a-horizontal-scrolling-nav-in-bootstrap
+{% endcomment %}
+{% if tag != '' and tag != None %}
+  {% url 'altlink:home-tag-rate' tag=tag rate='hot' as hot_url %}
+  {% url 'altlink:home-tag-rate' tag=tag rate='controversial' as controversial_url %}
+  {% url 'altlink:home-tag-rate' tag=tag rate='new' as new_url %}
+  {% url 'altlink:home-tag-rate' tag=tag rate='best' as best_url %}
+  {% url 'altlink:home-tag-rate' tag=tag rate='alternative' as alternative_url %}
+{% elif category_article != '' and category_article != None %}
+  {% url 'altlink:home-category-rate' category_article=category_article rate='hot' as hot_url %}
+  {% url 'altlink:home-category-rate' category_article=category_article rate='controversial' as controversial_url %}
+  {% url 'altlink:home-category-rate' category_article=category_article rate='new' as new_url %}
+  {% url 'altlink:home-category-rate' category_article=category_article rate='best' as best_url %}
+  {% url 'altlink:home-category-rate' category_article=category_article rate='alternative' as alternative_url %}
+{% else %}
+  {% url 'altlink:home-rate' rate='hot' as hot_url %}
+  {% url 'altlink:home-rate' rate='controversial' as controversial_url %}
+  {% url 'altlink:home-rate' rate='new' as new_url %}
+  {% url 'altlink:home-rate' rate='best' as best_url %}
+  {% url 'altlink:home-rate' rate='alternative' as alternative_url %}
+{% endif %}
+
+<ul class="nav nav-pills p-1 justify-content-center">
+  <li class="nav-item">
+    <a class="nav-link btn alter-btn" href="{{ hot_url }}"><ion-icon name="flame-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "Hot" %}</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link btn alter-btn" href="{{ controversial_url }}"><ion-icon name="flash" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "Controversial" %}</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link btn alter-btn" href="{{ new_url }}"><ion-icon name="sunny" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "New" %}</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link btn alter-btn" href="{{ best_url }}"><ion-icon name="thumbs-up" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "Best" %}</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link btn alter-btn" href="{{ alternative_url }}"><ion-icon name="git-branch-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "Alter" %}</span></a>
+  </li>
+  {% comment %} <li class="nav-item">
+    <a class="nav-link btn alter-btn" href="#"><ion-icon name="trending-up-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "Trends" %}</a>
+  </li> {% endcomment %}
+</ul>
+
+
+{% comment %} <div class='row justify-content-center'>
+    <div class='col-3 auto'>
+        {{ category_article_form.category_article|as_crispy_field }}
+    </div>
+    <div class='col-3 auto'>
+        {{ show_mode_article_form.show_mode_article|as_crispy_field }}
+    </div>
+</div> {% endcomment %}

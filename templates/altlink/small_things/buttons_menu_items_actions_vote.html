@@ -1,0 +1,44 @@
+{% load class_tag %}
+{% load format_big_number_tag %}
+{% load vote_if_voted %}
+{% load i18n %}
+
+
+<div class="d-flex flex-row flex-nowrap {% if object|get_class_name == "AlterArticle" %}justify-content-end{% endif %}">
+  <div class="ms-0 ps-0 pe-1" style="white-space:nowrap;">
+    {% comment %} <form class="container m-0 p-0 alter-buttons-menu-form" action="{% url 'altlink:voting' %}?next={{request.path}}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="pk" value="{{ object.pk }}">
+        <input type="hidden" name="vote_dir" value="up">
+        <input type="hidden" name="prev_view" value="{{ prev_view }}">
+        <input type="hidden" name="class_to_vote" value="{{ object|get_class_name }}">
+        <button type="submit" class="btn btn-success{% if object|vote_if_voted:request.user == "up" %}-outline text-muted{% endif %} alter-buttons-menu" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans "Interesting" %}: {{object.vote_up_counter}}"><ion-icon name="thumbs-up-outline"></ion-icon></button>
+    </form> {% endcomment %}
+    <form class="container m-0 p-0 alter-buttons-menu-form" id="votingForm" objectid="{{object|get_class_name}}-{{object.pk}}">
+        {% csrf_token %}
+        <input type="hidden" name="pk" value="{{ object.pk }}">
+        <input type="hidden" name="vote_dir" value="up">
+        <input type="hidden" name="prev_view" value="{{ prev_view }}">
+        <input type="hidden" name="class_to_vote" value="{{ object|get_class_name }}">
+        {% include 'altlink/small_things/buttons_menu_items_actions_vote_buttonup.html' with object=object %}
+    </form>
+
+    {% comment %} <form class="container m-0 p-0 alter-buttons-menu-form" action="{% url 'altlink:voting' %}?next={{request.path}}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="pk" value="{{ object.pk }}">
+        <input type="hidden" name="vote_dir" value="down">
+        <input type="hidden" name="prev_view" value="{{ prev_view }}">
+        <input type="hidden" name="class_to_vote" value="{{ object|get_class_name }}">
+        <button type="submit" class="btn btn-danger{% if object|vote_if_voted:request.user == "down" %}-outline text-muted{% endif %} alter-buttons-menu" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans "Not interesting" %}: {% if object.vote_down_counter > 0 %}-{% endif %}{{object.vote_down_counter}}"><ion-icon name="thumbs-down-outline"></ion-icon></button>
+    </form> {% endcomment %}
+    <form class="container m-0 p-0 alter-buttons-menu-form" id="votingForm" objectid="{{object|get_class_name}}-{{object.pk}}">
+        {% csrf_token %}
+        <input type="hidden" name="pk" value="{{ object.pk }}">
+        <input type="hidden" name="vote_dir" value="down">
+        <input type="hidden" name="prev_view" value="{{ prev_view }}">
+        <input type="hidden" name="class_to_vote" value="{{ object|get_class_name }}">
+        {% include 'altlink/small_things/buttons_menu_items_actions_vote_buttondown.html' with object=object %}
+    </form>
+
+  </div>
+</div>

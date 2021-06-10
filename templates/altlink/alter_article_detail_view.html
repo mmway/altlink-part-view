@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load crispy_forms_tags %} 
+{% load class_tag %}
+{% load verbose_name %}
+
+
+{% block title %} {% trans "Alternative info: " %} {{ object.title }} - {{ object|verbose_name }} {% trans "details" %} - {% trans "alter-link.com" %} {% endblock title %} 
+
+{% block breadcrumb %}
+    {% include "altlink/small_things/breadcrumb_home.html" %}
+    {% include "altlink/small_things/breadcrumb_aa_detail.html"%}
+{% endblock breadcrumb %}
+
+{% block body %}
+
+    {% include "altlink/small_things/alter_article_card.html" %}
+
+    {% include 'altlink/small_things/object_simple_delete_modal.html' %}
+    
+{% endblock body %}
+
+
+{% block custom_js %}
+
+<!-- START - Script running Modals on site from permalink #modal... (source: https://gist.github.com/MrDys/3512455#gistcomment-2948375)-->
+    <script>$(document).ready(function () {
+        $('.modal').each(function () {
+            const modalId = `#${$(this).attr('id')}`;
+            if (window.location.href.indexOf(modalId) !== -1) {
+                $(modalId).modal('show');
+            }
+        });
+    });</script>
+<!-- END - Script running Modals on site from permalink #modal... (source: https://gist.github.com/MrDys/3512455#gistcomment-2948375)-->
+
+{% endblock custom_js %}

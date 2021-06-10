@@ -1,0 +1,5 @@
+{% load format_big_number_tag %}
+{% load class_tag %}
+{% load i18n %}
+
+<span class="badge bg-{% if object.vote_score >= 0 %}success{% else %}danger{% endif %} vote-score-badge" id="voteScoreOverall" objectid="{{object|get_class_name}}-{{object.pk}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans "Votes sum" %}: {{ object.vote_score }}">{{ object.vote_score|format_big_number }}</span>

@@ -1,0 +1,8 @@
+{% load class_tag %}
+{% load format_big_number_tag %}
+{% load vote_if_voted %}
+{% load i18n %}
+
+<button type="submit" class="btn btn-success{% if object|vote_if_voted:request.user == "up" %}-outline text-muted{% endif %} alter-buttons-menu" id="voteUpButton" objectid="{{object|get_class_name}}-{{object.pk}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans "Interesting" %}: {{object.vote_up_counter}}">
+  <ion-icon name="thumbs-up-outline" class="icon-buttons-menu-items"></ion-icon>
+</button>

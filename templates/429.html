@@ -1,0 +1,19 @@
+{% extends "base.html" %} 
+
+{% load i18n %}
+
+
+{% block title %} 
+Alter-Link.com - {% trans "find alternative content" %}
+{% endblock title %} 
+
+{% block body %}
+    <div class="d-flex justify-content-center">
+        <div class="container pt-1 pb-1 ps-3 ps-md-5 pe-3 pe-md-5 col-12 col-md-10 col-lg-8 justify-content-center">
+            <h2 class="alter-color">{% trans "Ups... 429 error." %}</h2>
+            <h3 class="alter-color">{% trans "You've exceeded limit for this kind of requests." %}</h3>
+            <h5>{% trans "We may think that your are bot. Please wait some time and try again!" %}</h5>
+            <h5>{% trans "Normally limits are reseting after 1second, 1minute, 1hour or 1day - depending on which limit was reached" %}</h5>
+        </div>
+    </div>
+{% endblock body %}

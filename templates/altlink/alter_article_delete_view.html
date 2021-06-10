@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% load verbose_name %}
+{% load i18n %}
+
+
+{% comment %} 
+    cripsy setup from this site:
+    https://simpleisbetterthancomplex.com/tutorial/2018/08/13/how-to-use-bootstrap-4-forms-with-django.html 
+{% endcomment %}
+{% load crispy_forms_tags %}
+
+{% block title %} {{ object|verbose_name }} usuwanie {% endblock title %} 
+
+{% block breadcrumb %}
+    {% include "altlink/small_things/breadcrumb_home.html" %}
+    {% include "altlink/small_things/breadcrumb_aa_detail_link.html" with pk_aa=object.pk %}
+    {% include "altlink/small_things/breadcrumb_delete.html"%}
+{% endblock breadcrumb %}
+
+{% block body %}
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">{% trans "Do you want to delete this AlterArticle" %}: {{ object.title }}?</h5>
+        </div>
+        <div class="card-body">
+            {% include "altlink/small_things/buttons_delete_cancel.html" with slug=object.slug url_cancel=object.get_absolute_url %}
+        </div>
+    </div>
+
+{% endblock body %}

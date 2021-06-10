@@ -1,0 +1,20 @@
+{% load format_big_number_tag %}
+{% load verbose_name %}
+{% load class_tag %}
+{% load i18n %}
+
+
+<div class="col-lg-6 p-0 text-center">
+    <div class="row p-0">
+        <div class="container">
+            <span class="badge bg-secondary" title="{{ url_article_info_verbose_name_plural }}:">{{ url_article_info_verbose_name_plural }}:</span>
+        </div>
+    </div>
+    <div class="row p-0 pb-1 pb-md-0 pt-1">
+        <div class="container">
+            <a href="{% if which_view == 'alter_article_list_view' %}{{ object.get_absolute_url }}{% endif %}#{{ button_id_pro }}" class="btn p-0 m-0"><span class="badge bg-success alter-badge-proconalter" title="{% trans "Sum of points of all links from option PRO" %}: {{ object.link_pro_counter }}">{% trans "Pro" %}: <br>{{ object.link_pro_counter|format_big_number }}</span></a>
+            <a href="{% if which_view == 'alter_article_list_view' %}{{ object.get_absolute_url }}{% endif %}#{{ button_id_con }}" class="btn p-0 m-0"><span class="badge bg-danger alter-badge-proconalter" title="{% trans "Sum of points of all links from option CON" %}: {{ object.link_con_counter }}">{% trans "Con" %}: <br>{{ object.link_con_counter|format_big_number }}</span></a>
+            <a href="{% if which_view == 'alter_article_list_view' %}{{ object.get_absolute_url }}{% endif %}#{{ button_id_alter }}" class="btn p-0 m-0"><span class="badge bg-alter-color alter-badge-proconalter" title="{% trans "Sum of points of all links from option ALTER" %}: {{ object.link_alter_counter }}">{% trans "Alter" %}: <br>{{ object.link_alter_counter|format_big_number }}</span></a>
+        </div>
+    </div>
+</div>

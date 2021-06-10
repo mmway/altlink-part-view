@@ -1,0 +1,13 @@
+{% load i18n %}
+{% autoescape off %}  
+{% trans "Hi" %} {{ user.username }},
+
+{% trans "Please click on the link to confirm your registration in alter-link.com," %}
+
+{{ protocol }}://{{ domain }}{% url 'useralter:activate' uidb64=uid token=token %}  
+
+{% trans "If you think, you did not try to register in alter-link.com, then just ignore this email." %}
+
+{% trans "In both cases all the best" %},
+{% trans "The alter-link.com Team" %}
+{% endautoescape %}

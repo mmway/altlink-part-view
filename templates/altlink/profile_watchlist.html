@@ -1,0 +1,77 @@
+{% extends "base.html" %} 
+
+{% load verbose_name %}
+{% load i18n %}
+
+{% comment %} 
+    cripsy setup from this site:
+    https://simpleisbetterthancomplex.com/tutorial/2018/08/13/how-to-use-bootstrap-4-forms-with-django.html 
+{% endcomment %}
+{% load crispy_forms_tags %}
+{% load class_tag %}
+
+{% block title %} 
+{{ request.user }} - {% trans "your alternative watchlist" %}
+{% endblock title %} 
+
+{% block breadcrumb %}
+    {% include "altlink/small_things/breadcrumb_home.html" %}
+    {% include "altlink/small_things/breadcrumb_profile.html"%}
+    {% include "altlink/small_things/breadcrumb_profile_watch.html"%}
+{% endblock breadcrumb %}
+
+
+{% block body %}
+    <h3 class="mt-3 mb-4">
+        {% if which_view == 'profile_watchlist' %}
+            {% trans "Your watchlists:" %}
+        {% elif which_view == 'user_detail' %}
+            
+            {% trans "Alternatives created by user:" %} <span class="alter-color">{{user_detail_object.username}}</span>&nbsp;<img src="{{user_detail_object.image_url}}" class="img-fluid img-user" alt="{{user_detail_object.image_url}}">
+        {% endif %}
+    </h3>
+    <div class="mb-4">
+        <form class="container m-0 mb-0 p-0 alter-buttons-menu-form" action="{% if which_view == 'profile_watchlist' %}{% url 'altlink:watchlist' %}?next={{request.get_full_path}}{% elif which_view == 'user_detail' %}{% url 'altlink:user-detail' user_detail=user_detail_object.username %}{% endif %}" method="get">
+            {{ watchlist_class_form|crispy }}
+        </form>
+    </div>
+
+    {% if if_no_objects == False %}
+        {% for object in objects %}
+            {% if class_to_watch == 'AlterArticle' %}
+                {% include "altlink/small_things/alter_article_card.html" %}
+            {% elif class_to_watch == 'UrlArticleInfo' %}
+                <div class="container alter-card">
+                    {% include "altlink/small_things/alter_link_single_card.html" %}
+                </div>
+            {% elif class_to_watch == 'UrlBase' %}
+            {% endif %}
+        {% endfor %}
+
+        {% if is_paginated %} 
+            {% include "altlink/pagination.html" %}
+        {% endif %}
+    {% else %}
+        {% trans "You have no items watched in your chosen category above." %}
+
+    {% endif %}
+
+    {% include 'altlink/small_things/object_simple_delete_modal.html' %}
+
+{% endblock body %}
+
+
+{% block custom_js %}
+
+<!-- START - Script running Modals on site from permalink #modal... (source: https://gist.github.com/MrDys/3512455#gistcomment-2948375)-->
+    <script>$(document).ready(function () {
+        $('.modal').each(function () {
+            const modalId = `#${$(this).attr('id')}`;
+            if (window.location.href.indexOf(modalId) !== -1) {
+                $(modalId).modal('show');
+            }
+        });
+    });</script>
+<!-- END - Script running Modals on site from permalink #modal... (source: https://gist.github.com/MrDys/3512455#gistcomment-2948375)-->
+
+{% endblock custom_js %}

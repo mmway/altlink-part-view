@@ -1,0 +1,28 @@
+{% load class_tag %}
+{% load format_big_number_tag %}
+{% load verbose_name %}
+{% load watch_if_watched %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+<div class="d-flex flex-row flex-nowrap {% if object|get_class_name == "AlterArticle" %}justify-content-end{% endif %}">
+
+  <div class="ms-0 ps-0 pe-1" style="white-space:nowrap;">
+    {% if object|get_class_name == "AlterArticle" or object|get_class_name == "UrlArticleInfo" or object|get_class_name == "UrlBase"%}
+      {% comment %} <input type="text" id="shareButtonInput" objectid="shareButtonInput-{{object|get_class_name}}-{{ object.pk }}" > {% endcomment %}
+      <a tabindex="0" class="btn btn-info alter-buttons-menu shareButton" data-value-url="{{ BASE_URL }}{{ object.get_absolute_url }}" objectid="{{object|get_class_name}}-{{ object.pk }}" role="button" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-content="{% trans 'Link to this copied to your clipboard!' %}">
+        <ion-icon name="share-social-outline" class="icon-buttons-menu-items"></ion-icon>
+      </a>
+    {% endif %}
+
+    {% if object|get_class_name == "AlterArticle" or object|get_class_name == "UrlArticleInfo" or object|get_class_name == "UrlBase" or object|get_class_name == "ContentComment" %}
+      <form class="container m-0 p-0 alter-buttons-menu-form watchlistToggleForm" id="watchlistToggleForm-{{object|get_class_name}}-{{ object.pk }}">
+          {% csrf_token %}
+          <input type="hidden" name="pk" value="{{ object.pk }}">
+          <input type="hidden" name="class_to_watch" value="{{ object|get_class_name }}">
+          <button type="submit" class="btn btn-secondary{% if object|watch_if_watched:request.user == True %}-outline text-muted{% endif %} alter-buttons-menu watchlistToggleButton" id="watchlistToggleButton-{{object|get_class_name}}-{{ object.pk }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans "Add to your watchlist" %}"><ion-icon name="bookmark-outline" class="icon-buttons-menu-items"></ion-icon></button>
+      </form>
+    {% endif %}
+  </div>
+
+</div>

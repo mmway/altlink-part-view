@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block title %}
+    {% trans "User email address confirmation information" %} - www.alter-link.com
+{% endblock title %}
+
+{% block body %}
+
+<h1>{% trans "Please confirm your email address to complete the registration" %}</h1>
+<p>{% trans "Check your inbox and spam for email containing activation link. You should receive email shortly."%}</p>
+
+
+{% endblock body %}

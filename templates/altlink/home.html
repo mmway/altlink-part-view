@@ -1,0 +1,85 @@
+{% extends "base.html" %} 
+
+{% load verbose_name %}
+{% load i18n %}
+
+{% comment %} 
+    cripsy setup from this site:
+    https://simpleisbetterthancomplex.com/tutorial/2018/08/13/how-to-use-bootstrap-4-forms-with-django.html 
+{% endcomment %}
+{% load crispy_forms_tags %}
+{% load class_tag %}
+
+
+{% block title %} 
+Alter-Link.com - {% trans "find alternative content" %}
+{% endblock title %} 
+
+{% block score_categories%}
+    <div class="d-flex justify-content-center">
+        <div class="pt-1 pb-1 ps-3 ps-md-5 pe-3 pe-md-5 col-12 col-md-10 col-lg-8">
+            {% include "base_navbar_top_categories.html" %}
+        </div>
+    </div>
+{% endblock score_categories%}
+
+{% block search%}
+    <div class="d-flex justify-content-center">
+        <div class="pt-1 pb-1 ps-3 ps-md-5 pe-3 pe-md-5 col-12 col-md-10 col-lg-8" style="max-width: 1000px;">
+            <form method="get">
+                <div class="input-group">
+                    {{ search_form }}
+                    {% comment %} <input type="text" class="form-control" placeholder="{% trans "Search alter-link.com" %}" > {% endcomment %}
+                    <button class="btn btn-outline-alter" type="submit" id="button-navbar_search">{% trans "Search" %}</button>
+                </div>
+            </form>
+            {% comment %} <form method="get">
+
+                {{ search_form|crispy }}
+                
+                <div class="col text-center m-2">
+                    <button type="submit" class="btn alter-btn"><ion-icon name="search-outline"></ion-icon>{% trans "Search" %}</button>
+                </div>
+            </form> {% endcomment %}
+        </div>
+    </div>
+    {% if q and q.strip %}
+        <div class="row ps-2 pe-2 text-center">
+            <div class="col h4">
+                {% trans "Search results:" %}&nbsp;{{alter_articles.paginator.count}}&nbsp;
+            </div>
+        </div>
+    {% endif %}
+{% endblock search%}
+
+{% block body %}
+
+{% for object in alter_articles %}
+    {% comment %} {{object.hot_score}}|||{{object.controversial_score}}|||{{object.best_score}}|||{{object.alternative_score}} {% endcomment %}
+    {% include "altlink/small_things/alter_article_card.html" %}
+{% endfor %}
+
+{% if is_paginated and alter_articles.paginator.count > 0 %} 
+    {% include "altlink/pagination.html" %}
+{% endif %} 
+
+<div class="container mt-4 py-2 pb-3 mb-0 border-top border-bottom">
+    <p class="text-center ">
+        {% if if_no_alter_articles %}
+            :(<br>{% trans "Your search has not found" %} {{ alter_article_info_verbose_name_gen }} / {{ url_article_info_verbose_name_gen }}<br>{% trans "You can create one" %}!&nbsp;:)
+        {% else %}
+            {% trans "You have not found" %} {{ alter_article_info_verbose_name_gen }} / {{ url_article_info_verbose_name_gen }}?<br>{% trans "You can " context "in sentence 'You can create new one'"%} <a href="{% url 'altlink:alter-article-create' %}?q={{q}}" class="alter-link-color" role="button">{% trans "create" %}</a> {% trans "new one" context "in sentence 'You can create new one'" %}!&nbsp;:)
+        {% endif %}
+    <br>{{ testmw }}
+    </p>
+
+    <form method="get">
+        <div class="d-flex justify-content-center">
+            <a href="{% url 'altlink:alter-article-create' %}?q={{q}}" class="btn btn-outline-alter" role="button">{% trans "Create" %} {{ alter_article_info_verbose_name }} {% trans "or add" %} {{ url_article_info_verbose_name }}</a>
+        </div>
+    </form>
+</div>
+
+{% include 'altlink/small_things/object_simple_delete_modal.html' %}
+
+{% endblock body %}

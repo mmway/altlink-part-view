@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% load verbose_name %}
+{% load i18n %}
+
+{% comment %} 
+    cripsy setup from this site:
+    https://simpleisbetterthancomplex.com/tutorial/2018/08/13/how-to-use-bootstrap-4-forms-with-django.html 
+{% endcomment %}
+{% load crispy_forms_tags %}
+
+{% block title %} {% trans "Quotation for AlterLink" %} {% endblock title %} 
+
+{% block breadcrumb %}
+    {% include "altlink/small_things/breadcrumb_home.html" %}
+    <li class="breadcrumb-item"><a href="{% url 'altlink:alter-article-detail' slug_aa=slug_aa %}" class="alter-link-color">{% trans "AlterArticle" %}</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'altlink:url-article-info-detail' pk_aa=pk_aa slug_uai=slug_uai %}" class="alter-link-color">{% trans "AlterLink" %}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{% if pk %}{% trans "AlterLink quotation edit" %}{% else %}{% trans "AlterLink quotation create" %}{% endif %}</li>
+{% endblock breadcrumb %}
+
+{% block body %}
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">{% trans "Create alternative informations for yourself and others!" %}</h5>
+        </div>
+        <div class="card-body">
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                <div class="rounded p-2" style="background-color:hsl(180, 40%, 90%);" >
+                    {{ content_quotation_uai_form|crispy }}
+                </div>
+                
+                {% comment %} {% if pk %} {% endcomment %}
+                    {% include "altlink/small_things/buttons_save_cancel.html" with url_cancel=url_cancel %}
+                {% comment %} {% else %} {% endcomment %}
+                    {% comment %} {% include "altlink/small_things/buttons_create_cancel.html" with url_cancel=url_cancel %} {% endcomment %}
+                {% comment %} {% endif %} {% endcomment %}
+            </form>
+        </div>
+    </div>
+
+{% endblock body %}

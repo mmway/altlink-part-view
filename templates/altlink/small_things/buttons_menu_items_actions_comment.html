@@ -1,0 +1,24 @@
+{% load class_tag %}
+{% load format_big_number_tag %}
+{% load verbose_name %}
+{% load watch_if_watched %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+<div class="d-flex flex-row flex-nowrap {% if object|get_class_name == "AlterArticle" %}justify-content-end{% endif %}">
+
+  <div class="ms-0 ps-0 pe-1" style="white-space:nowrap;">
+    {% if which_view == "alter_article_list_view" or which_view == "profile_watchlist" or which_view == "user_detail" %}
+      <a href="{% if object|get_class_name == "AlterArticle" or object|get_class_name == "UrlArticleInfo" %}{{ object.get_absolute_url }}{% else %}{{request.get_full_path}}{% endif %}#modalComment-{{object|get_class_name}}-{{ object.pk }}" 
+        class="btn btn-secondary alter-buttons-menu-comment" 
+        title="{% trans "See discussion" %}. {% trans "Comments" %} {{ object.comments|length|format_big_number }}">
+          {% comment %} <button class="btn btn-secondary alter-buttons-menu" type="button" title="{% trans "See discussion" %}. {% trans "Comments" %} {{ object.comments|length|format_big_number }}"> {% endcomment %}
+              <ion-icon name="chatbubbles-outline" class="icon-buttons-menu-items"></ion-icon>{{ object.comments|length|format_big_number }}
+          {% comment %} </button> {% endcomment %}
+      </a>
+    {% else %}
+      <button type="button" class="btn btn-secondary alter-buttons-menu-comment" data-bs-toggle="modal" data-bs-target="#modalComment-{{object|get_class_name}}-{{ object.pk }}" data-bs-content="{% trans "See discussion" %}. {% trans "Comments" %} {{ object.comments|length|format_big_number }}"><ion-icon name="chatbubbles-outline" class="icon-buttons-menu-items"></ion-icon>{{ object.comments|length|format_big_number }}</button>
+    {% endif %}
+  </div>
+
+</div>

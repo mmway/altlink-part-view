@@ -1,0 +1,90 @@
+{% load i18n %}
+{% load crispy_forms_tags %} 
+{% load class_tag %}
+{% load verbose_name %}
+
+<div class="row">
+{% comment %} Hey guys! #stackoverflow really #rocks #rocks #announcement #1234#1111; 3213, 3213, #1sdfasd #2cdsfdas# #3dfasdas, #dfsds, #dfdsf,  {% endcomment %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-10 alter-card me-1 mb-3">
+                <div class="row m-0 border-top main-card-shadow">
+                {% comment %} H: {{ object.hot_score }} | C: {{ object.controversial_score }} | B: {{ object.best_score }} | A: {{ object.alternative_score }} {% endcomment %}
+                    <div class="d-flex p-0 m-0">
+                        <div class="d-flex p-0 m-0 ps-1 pe-1">
+                            {% for cat in object.category_article.all %}
+                                <a href="{% url 'altlink:home-category' category_article=cat|lower %}" class="category-name-link">
+                                    {{cat}}&nbsp;
+                                </a>
+                            {% endfor %}
+                        </div>
+                        
+                            {% if object.tag.all.exists %}
+                                <span class="tag-sepratator-name-link">&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span>
+                                <div class="d-flex flex-wrap p-0 m-0 ps-1 pe-1">
+                                    {% for tag in object.tag.all %}
+                                        <a href="{% url 'altlink:home-tag' tag=tag|lower %}" class="tag-name-link">
+                                            {{tag}}&nbsp;
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        
+                    </div>
+                    <div class="col-12 col-lg-5 col-xl-6 p-0 text-center">
+                        <a href="{{ object.get_absolute_url }}">
+                            <img src={{ object.image_url }} class="img-fluid" alt="{{ object.title|title }}">
+                        </a>
+                    </div>
+
+                    <div class="col-12 col-lg-7 col-xl-6 ps-1 pe-0">
+                    <div class="container-fluid p-0 m-0 ps-1 pe-1">
+                        <div class="d-flex flex-row pt-1 pb-1 ms-0 ps-0">
+                            <div class="container-fluid p-0 me-1 pe-1">
+                                <div class="row mb-1">
+                                    <div class="container alter-card-title me-1 ms-1 me-md-0 ms-md-0">
+                                        <h3 class="mb-0">
+                                            <a href="{{ object.get_absolute_url }}" class="alter-link-color"><strong>{{ object.title|title }}</strong></a>
+                                            {% comment %} {% if which_view != "alter_article_list_view" %}
+                                                <small>{% include "altlink/small_things/buttons_instance_update.html" with url_action=url_action_update %}</small>
+                                            {% endif %} {% endcomment %}
+                                        </h3>
+                                        <div class="m-0 p-0">
+                                            {% include "altlink/small_things/user_edit_info.html" with object=object %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row p-0 m-0">
+                                    <div class="container alter-card-summary me-1 ms-1 me-md-0 ms-md-0 p-0 pt-2 {% if which_view != "alter_article_list_view" %}shadow-inside{% endif %}">
+                                        {% if which_view != "alter_article_list_view" %}
+                                            <div class="h5">{{ object.summary }}</div>
+                                            <div class="m-0 p-0">
+                                                {% include "altlink/small_things/user_edit_info.html" with object=object.summary %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pe-0 me-0 ps-1 border-start text-center">
+                                {% include "altlink/small_things/buttons_menu_items_actions_score_overall.html" with object=object %}
+                                {% include "altlink/small_things/buttons_menu_items_actions_vote.html" with object=object prev_view=request.get_full_path %}
+                                {% include "altlink/small_things/buttons_menu_items_actions_comment_bookmark.html" with object=object prev_view=request.get_full_path %}
+                                {% include "altlink/small_things/buttons_menu_items_actions_rest.html" with object=object prev_view=request.get_full_path %}
+                                {% include "altlink/small_things/buttons_menu_items_actions_comment.html" with object=object prev_view=request.get_full_path %}
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="row m-0 p-0 pt-1 pb-1 mb-1">
+                    {% include "altlink/small_things/buttons_menu_items_actions_score_proconalter.html" with object=object button_id_pro=button_id_pro button_id_con=button_id_con button_id_alter=button_id_alter url_article_info_verbose_name_plural=url_article_info_verbose_name_plural %}
+                    {% include "altlink/small_things/buttons_menu_items_actions_score_proconalter_progressbar.html" with progressbar_pro=object.progressbar_pro progressbar_con=object.progressbar_con progressbar_alter=object.progressbar_alter url_article_info_verbose_name_plural=url_article_info_verbose_name_plural %}
+                </div>
+
+                <!-- Block ProConAlter side-by-side row in large view -->
+                    {% include "altlink/small_things/card_collapse.html" %}
+                <!-- END - Block ProConAlter side-by-side row in large view -->
+            </div>
+        </div>
+    </div>
+</div>

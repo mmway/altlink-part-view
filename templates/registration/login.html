@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block title %}
+    {% trans "Log in" %} - www.alter-link.com
+{% endblock title %}
+
+{% block body %}
+
+{% if form.errors %}
+<p>{% trans "Your username or password are incorrect. Please try again." %}</p>
+{% comment %} <p>Twoja nazwa użytkownika lub hasło niezgadzają się. Spróbuj jeszcze raz.</p> {% endcomment %}
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>{% trans "You have no acces to this site." %}</p>
+    {% comment %} <p>Twoje konto nie ma dostępu do tej strony.</p> {% endcomment %}
+    {% else %}
+    <p class="text-center">{% trans "Please login for access to" %}</p>
+    {% comment %} <p class="text-center">Zaloguj się do nas, będziesz mógł:</p> {% endcomment %}
+    <p class="text-center">{% trans "commenting, voting, saving watched content and more." %}</p>
+    {% comment %} <p class="text-center">komentować, głosować, obserwować AlterArtykuły i wiele innych.</p> {% endcomment %}
+    {% endif %}
+{% endif %}
+
+<form method="post" action="{% url 'useralter:login' %}" novalidate>
+    {% csrf_token %}
+    <table class="table table-sm">
+        <tr>
+            {% comment %} <div>{{ form.username.label_tag }}</div> {% endcomment %}
+            {% comment %} <div>Nazwa użytkownika:</div> {% endcomment %}
+            <div>{{ form.username|as_crispy_field }}</div>
+        </tr>
+        <tr>
+            {% comment %} <div>{{ form.password.label_tag }}</div> {% endcomment %}
+            {% comment %} <div>Hasło:</div> {% endcomment %}
+            <div>{{ form.password|as_crispy_field }}</div>
+            <p><a href="{% url 'password_reset' %}">{% trans "Reset password" %}</a></p>
+        </tr>
+    </table>
+
+    <div class="row mt-1">
+        <div class="col-md-8 mx-auto social-container my-2 order-md-1">
+            <input class="btn btn-success" type="submit" value={% trans "Log in" %}>
+        </div>
+    </div>
+    <input type="hidden" name="next" value="{{ next }}">
+</form>
+
+{# Assumes you setup the password_reset view in your URLconf #}
+{% comment %} <p><a href="{% url 'password_reset' %}">Nie pamiętasz hasła?</a></p> {% endcomment %}
+
+
+<div class="row mt-4">
+    <div class="col-md-8 mx-auto social-container my-2 order-md-1">
+        <button class="btn btn-danger btn-social mb-2">
+            <a href="{% url 'social:begin' 'google-oauth2' %}"> <ion-icon name="logo-google"></ion-icon> {% trans "Login with Google" %}</a>
+        </button>
+    </div>
+</div>
+
+{% endblock body %}

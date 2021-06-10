@@ -1,0 +1,19 @@
+{% load class_tag %}
+{% load i18n %}
+
+{% if object|get_class_name == 'UrlBase' %}
+    <small class="text">{% trans "Times link exists in all AlterArticles" %}:</small>
+        {{object.times_exists_in_alter_articles}}
+    <br>
+{% endif %}
+<small class="text">{% trans "Entred times" %}: </small>
+    {{object.entered_counter}}
+<br>
+<small class="text">{% trans "Voted up" %}: </small>
+    {{object.vote_up_counter}}
+<br>
+<small class="text">{% trans "Voted down" %}: </small>
+    {{object.vote_down_counter}}
+<br>
+<small class="text">{% trans "Vote score" %}: </small>
+    {{object.vote_score}}

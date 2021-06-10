@@ -1,0 +1,51 @@
+{% load i18n %}
+{% load class_tag %}
+{% load verbose_name %}
+
+<div class="row p-0 m-0 mb-1 h4" style="word-break: break-word;overflow-wrap: break-word;">
+    {% if which_view == 'AlterArticleDetailView' or which_view == 'profile_watchlist' %}<a href="{{ object.get_absolute_url }}" class="alter-link-color">{% endif %}
+        {% trans "AlterLink:" %}
+    {% if which_view == 'AlterArticleDetailView' or which_view == 'profile_watchlist' %}</a>{% endif %}
+</div>
+<div class="row p-0 m-0 h4" style="word-break: break-word;overflow-wrap: break-word;">
+    - {% trans "best summary" %}
+</div>
+<div class="row p-0 m-0 pb-1 h5 border-bottom" style="word-break: break-word;overflow-wrap: break-word;">
+    <div class="container p-0 m-0">
+        {{ object.summary }}
+    </div>
+    <div class="container p-0 m-0">
+        <div class="d-flex p-0 m-0 justify-content-end">
+            {% include "altlink/small_things/user_edit_info.html" with object=object.summary %}
+        </div>
+    </div>
+</div>
+
+<div class="flex-row p-0 m-0">
+    {% if object.quotation_best.text != "" and object.quotation_best.text != None and object.quotation_best.text != Null and object.quotation_best.text != "\n" %}
+        <div class="flex-row p-0 m-0 pb-1 border-bottom">
+            <div class="row p-0 m-0 h5" style="word-break: break-word;overflow-wrap: break-word;">
+                <div>
+                - {% trans "best quotation / place to start reading" %} 
+                ({% include "altlink/small_things/href_open_link_text_fragment_note.html" %}):
+                </div>
+            </div>
+            <div class="row p-0 m-0" style="word-break: break-word;overflow-wrap: break-word;">
+                <blockquote class="blockquote mb-0 pb-0">
+                    {% trans "go" as text_go %}
+                    {{object.quotation_best_text_marked}} {% include "altlink/small_things/href_open_link_text_fragment.html" with url=object.url_quotation_best text=text_go text2='<ion-icon name="open-outline"></ion-icon>' %}
+                </blockquote>
+            </div>
+            <div class="d-flex p-0 m-0 justify-content-end">
+                {% include "altlink/small_things/user_edit_info.html" with object=object.quotation_best %}
+            </div>
+        </div>
+        <div class="row p-0 m-0" style="word-break: break-word;overflow-wrap: break-word;">
+            <div class="h7 text-muted m-0">{% trans "Better quotation / place to start reading or summary? You can add your alternative" %} <a href="{% url 'altlink:url-article-info-update' pk_aa=object.alter_article.pk slug_uai=object.slug %}" class="alter-color">{% trans "here" %}</a>.</div>
+        </div>
+    {% else %}
+        <div class="row p-0 m-0" style="word-break: break-word;overflow-wrap: break-word;">
+            <div class="h7 text-muted m-0">{% trans "Nobody have added quotation / place to start reading. You can add some" %} <a href="{% url 'altlink:url-article-info-detail' pk_aa=object.alter_article.pk slug_uai=object.slug %}" class="alter-color">{% trans "here" %}</a>. </div>
+        </div>
+    {% endif %}
+</div>

@@ -1,0 +1,65 @@
+{% load i18n %}
+{% load crispy_forms_tags %} 
+{% load class_tag %}
+{% load verbose_name %}
+
+<!-- Block ProConAlter side-by-side row in large view -->
+<div class="ps-0 pe-0">
+    <div class="row">
+        <!-- Pro/Con/Alter -->
+        {% for elements, button_name, button_id, collapse_name, button_class, icon_name, button_name_add in elements_list %}
+            <div class="container">
+                <div class="container-fluid btn rounded-0 ps-1 pe-0 ms-0 me-0 bg-light shadow-outside" data-bs-toggle="collapse" data-bs-target="#{{collapse_name}}" aria-expanded="false" aria-controls="{{collapse_name}}">
+                    <div class="d-flex flex-row me-0 ms-0">
+                        {% if which_view == "AlterArticleDetailView" %}
+                            {% include "altlink/small_things/buttons_instance_create.html" with url_action=url_action_create button_name=button_name_add|title button_class=button_class %}
+                        {% endif %}
+                        {% if which_view == "UrlArticleInfoDetailView" %}
+                            {% if button_id == "summary" %}
+                                {% include "altlink/small_things/buttons_instance_create.html" with url_action=url_action_create_summary button_name=button_name_add|title button_class=button_class %}
+                            {% endif %}
+                            {% if button_id == "quotation" %}
+                                {% include "altlink/small_things/buttons_instance_create.html" with url_action=url_action_create_quotation button_name=button_name_add|title button_class=button_class %}
+                            {% endif %}
+                        {% endif %}
+                        <div class="col-4 col-sm-3 col-md-2 offset-4 offset-lg-5 mx-auto d-flex">
+                            <a href="#{{ button_id }}">
+                                <button class="btn {{ button_class }} alter-btn-proconalter" type="button" id="{{ button_id }}">
+                                    {% if button_id == "summary" or button_id == "quotation" %}{% else %}<ion-icon name="{{ icon_name }}"></ion-icon><span> {% endif %}
+                                    {{ button_name|title }}</span>
+                                </button>
+                            </a>
+                            {% if elements|length > 1 %}
+                                <a href="#{{ button_id }}">
+                                    <div class="btn me-1 p-0 top-end-relative" title="{% trans "Show/hide more" %} {{ button_name|title }}"><ion-icon name="swap-vertical-outline"></ion-icon></div>
+                                </a>
+                            {% endif %}
+                        </div>
+                        
+                    </div>
+                </div>
+                <!-- link rows -->
+                {% if which_view == 'AlterArticleDetailView' or which_view == 'UrlArticleInfoDetailView' %}
+                    {% for object in elements|slice:"0:" %}
+                        {% if forloop.counter == 2 %}
+                            <div class="collapse show container-fluid p-0 m-0" id="{{ collapse_name }}">
+                        {% endif %}
+
+                            {% include "altlink/small_things/alter_link_single_card.html" %}
+
+                        {% if forloop.last and forloop.counter >= 2 %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    {% if not elements %}
+                        <div class="collapse show container-fluid p-0 m-0 text-center" id="{{ collapse_name }}">
+                        {{ url_article_info_verbose_name_plural_gen }} "{{ button_name|title }}"{% trans " missing. You can add one :)" %}
+                        </div>
+                    {% endif %}
+                {% endif %}
+                <!-- END - link rows -->
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<!-- END - Block ProConAlter side-by-side row in large view -->

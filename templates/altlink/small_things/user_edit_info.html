@@ -1,0 +1,24 @@
+{% load class_tag %}
+{% load i18n %}
+{% load humanize %}
+{% load verbose_name %}
+
+<div class="flex-container m-0 p-0 justify-content-end">
+  <div class="flex-container-wrap m-0 p-0 justify-content-end">
+    <div class="flex-container-nowrap m-0 p-0">
+      <div class="h7">{{ object|verbose_name }}&nbsp;</div>
+      <div class="h7">{% trans "added" %}&nbsp;</div>
+      <div class="h7">{{ object.timestamp_created|naturaltime }}&nbsp;</div>
+    </div>
+    <div class="flex-container-nowrap m-0 p-0 me-1">
+      <div class="h7 text-muted">{% trans "by" context "added something BY somebody" %}&nbsp;</div>
+      <a class="h7 user-name-link fw-bold" href="{% url 'altlink:user-detail' user_detail=object.user %}">
+          {{ object.user }}
+      </a>
+    </div>
+  </div>
+
+  <a href="{% url 'altlink:user-detail' user_detail=object.user %}">
+      <img src="{{object.user.image_url}}" class="img-fluid img-user" alt="{{object.user.image_url}}">
+  </a>
+</div>

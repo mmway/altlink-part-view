@@ -1,0 +1,13 @@
+{% load i18n %}
+{% load class_tag %}
+{% load verbose_name %}
+
+<div class="row p-0 m-0 h4" style="word-break: break-word;overflow-wrap: break-word;">
+    {% trans "AlterLink quotation" %}:
+</div>
+<div class="row p-0 m-0 mb-0 h4" style="word-break: break-word;overflow-wrap: break-word;">
+    <blockquote class="blockquote mb-0 pb-0">
+        {% trans "go" as text_go %}
+        {{ object.text_quotation }} {% include "altlink/small_things/href_open_link_text_fragment.html" with url=object.url_quotation text=text_go text2='<ion-icon name="open-outline"></ion-icon>' %}
+    </blockquote>
+</div>

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load verbose_name %}
+
+{% comment %} 
+    cripsy setup from this site:
+    https://simpleisbetterthancomplex.com/tutorial/2018/08/13/how-to-use-bootstrap-4-forms-with-django.html 
+{% endcomment %}
+{% load crispy_forms_tags %}
+
+{% block title %} {% trans "Create AlterArticle" %} {% endblock title %} 
+
+{% block breadcrumb %}
+    {% include "altlink/small_things/breadcrumb_home.html" %}
+    {% include "altlink/small_things/breadcrumb_aa_create.html" %}
+{% endblock breadcrumb %}
+
+{% block body %}
+
+    <div class="card">
+        <div class="card-header text-center">
+            <h4 class="card-title">{% trans "You are creating new AlterArticle! Thank you!" %}</h4>
+            <div class="card-title alter-color">{% trans "Create alternative informations for yourself and others!" %}</div>
+        </div>
+        <div class="card-body"> 
+            <form method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                <div class="rounded p-2 fields-required-bg">
+                    <div class="row">
+                        <div class="optional-label">{% trans "AlterArticle required fields" %}</div>
+                        <div class="form-group">
+                            <div class="row">
+                                {{ url_base_form.url|as_crispy_field }}
+                            </div>
+                            <div class="row mt-3">
+                                {{ content_title_aa_form.text|as_crispy_field }}
+                            </div>
+                            <div class="row mt-3">
+                                {% comment %} <div class="optional-label">{% trans "AlterLink required fields" %}</div> {% endcomment %}
+                                {{ url_article_info_form.type_url|as_crispy_field }}
+                            </div>
+                            <div class="row mt-3">
+                                {{ alter_article_form.image_url|as_crispy_field }}
+                                <div class="col-lg-7 text-center mt-1">
+                                    <p class="text-success" id="image_url_message" style="display:none"></p>
+                                    <img src="https://cdn.pixabay.com/photo/2015/12/22/04/00/photo-1103595_1280.png" id="aa_preview_image" class="img-fluid mt-1 text-center mx-auto p-3 bg-light" alt="Preview of AlterArticle image" style="max-width:240px;">
+                                </div>
+                                <div class="form-group col-lg-5 mt-3">
+                                    {{ alter_article_form.category_article|as_crispy_field }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% comment %} {{ content_excerpt_aa_form.text|as_crispy_field }} {% endcomment %}
+                </div>
+                <hr>
+                <div class="rounded p-2 fields-optional-bg">
+                    <div class="optional-label pb-0">{% trans "AlterArticle optional fields" %}</div>
+                    <div class="optional-label pt-0 h6">{% trans "( but important :) )" %}</div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {{ content_summary_aa_form.text|as_crispy_field }}
+                        </div>
+                        <div class="mt-3 mt-lg-0 col-lg-6">
+                            {{ tag_aa_form.tag|as_crispy_field }}
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="rounded p-2 fields-optional-bg">
+                    <div class="optional-label pb-0">{% trans "AlterLink optional fields" %}</div>
+                    <div class="optional-label pt-0 h6">{% trans "( but important :) )" %}</div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {{ content_summary_uai_form.text|as_crispy_field }}
+                        </div>
+                        <div class="mt-3 mt-lg-0 col-lg-6">
+                            {{ content_quotation_uai_form.text|as_crispy_field }}
+                        </div>
+                    </div>
+                </div>
+
+                {% include "altlink/small_things/buttons_create_cancel.html" with url_cancel=url_cancel %}
+            </form>
+        </div>
+    </div>
+
+{% endblock body %}

@@ -1,0 +1,7 @@
+{% load format_big_number_tag %}
+{% load class_tag %}
+{% load i18n %}
+
+{% if object|get_class_name != "AlterArticle" %}<div class="d-flex justify-content-center">{% endif %}
+  {% include 'altlink/small_things/buttons_menu_items_actions_score_overall_badge.html' with object=object %}
+{% if object|get_class_name != "AlterArticle" %}</div>{% endif %}

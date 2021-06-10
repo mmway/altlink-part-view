@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load i18n %}
+
+{% block title %}
+    {% trans "Sign up" %} - www.alter-link.com
+{% endblock title %}
+
+{% block body %}
+  <div class="row">
+    <div class="container">
+      <h2>{% trans "Sign up" %}</h2>
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+          <p>
+            {% comment %} {{ field.label_tag }}<br> {% endcomment %}
+            {{ field|as_crispy_field }}
+            {% comment %} {% if field.help_text %}
+              <small style="color: grey">{{ field.help_text }}</small>
+            {% endif %} {% endcomment %}
+            {% for error in field.errors %}
+              <p style="color: red">{{ error }}</p>
+            {% endfor %}
+          </p>
+        {% endfor %}
+        <button class="btn btn-success" type="submit">{% trans "Sign up" %}</button>
+      </form>
+    </div>
+  </div>
+{% endblock body %}

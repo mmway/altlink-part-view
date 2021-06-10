@@ -1,0 +1,18 @@
+{% load i18n %}
+
+<form action="{% url 'altlink:voting' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="pk" value="{{pk}}">
+    <input type="hidden" name="vote_dir" value="up">
+    <input type="hidden" name="prev_view" value="{{ prev_view }}">
+    <input type="hidden" name="class_to_vote" value="{{ class_to_vote }}">
+    <button type="submit" class='btn btn-success'>{% trans "Vote UP" %}!</button>
+</form>
+<form action="{% url 'altlink:voting' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="pk" value="{{pk}}">
+    <input type="hidden" name="vote_dir" value="down">
+    <input type="hidden" name="prev_view" value="{{ prev_view }}">
+    <input type="hidden" name="class_to_vote" value="{{ class_to_vote }}">
+    <button type="submit" class='btn btn-danger'>{% trans "Vote DOWN" %}!</button>
+</form>

@@ -1,0 +1,10 @@
+{% load class_tag %}
+{% load format_big_number_tag %}
+{% load vote_if_voted %}
+{% load i18n %}
+
+
+<button type="submit" class="btn btn-danger{% if object|vote_if_voted:request.user == "down" %}-outline text-muted{% endif %} alter-buttons-menu" id="voteDownButton" objectid="{{object|get_class_name}}-{{object.pk}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans "Not interesting" %}: {% if object.vote_down_counter > 0 %}-{% endif %}{{object.vote_down_counter}}">
+  <ion-icon name="thumbs-down-outline" class="icon-buttons-menu-items"></ion-icon>
+</button>
+

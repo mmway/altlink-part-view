@@ -1,0 +1,10 @@
+{% load i18n %}
+
+<small class="text">{% trans "Voted PRO" %}: </small>
+    {{object.vote_pro_counter}}
+<br>
+<small class="text">{% trans "Voted CON" %}: </small>
+    {{object.vote_con_counter}}
+<br>
+<small class="text">{% trans "Vote ALTER" %}: </small>
+    {{object.vote_alter_counter}}

@@ -1,0 +1,3 @@
+{% load i18n %}
+
+<a href="{% url 'altlink:entering' slug=slug goto=goto class_entered=class_entered %}" class="me-2 pe-3" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="{% trans "Open URL in new tab" %}"> {{ text }}</a>

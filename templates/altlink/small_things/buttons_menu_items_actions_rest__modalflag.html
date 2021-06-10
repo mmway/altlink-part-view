@@ -1,0 +1,32 @@
+{% load class_tag %}
+{% load format_big_number_tag %}
+{% load verbose_name %}
+{% load watch_if_watched %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% if which_view == "AlterArticleDetailView" or which_view == "UrlArticleInfoDetailView" or which_view == "alter_article_list_view" %}
+<!-- Modal Flags-->
+<div class="modal fade" id="modalFlag-{{object|get_class_name}}-{{ object.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable text-start" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title text-start">
+          {% trans "Flag this" %}
+          <div class="breaking-word-all">{{object|verbose_name}}</div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body ms-2 me-2 ps-1 pe-1">
+        <form class="container form-flag mt-2 mb-2" objectid="{{object|get_class_name}}-{{object.pk}}">
+          {% csrf_token %}
+          {{ flag_form.name|as_crispy_field}}
+          <input type="hidden" name="class_for_operation" value="{{object|get_class_name}}" objectid="{{object|get_class_name}}-{{object.pk}}">
+          <input type="hidden" name="pk" value="{{ object.pk }}" objectid="{{object|get_class_name}}-{{object.pk}}">
+          <button type="submit" class="btn btn-info float-end form-button-submit-flag" id="buttonSubmitFlag" objectid="{{object|get_class_name}}-{{object.pk}}">{% trans "Save" %}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}

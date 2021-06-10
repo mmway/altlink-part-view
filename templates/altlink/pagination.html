@@ -1,0 +1,54 @@
+{% load i18n %}
+{% load verbose_name %}
+
+<nav aria-label="navigation">
+    <ul class="pagination justify-content-center mb-0">
+        {% if alter_articles.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ alter_articles.previous_page_number }}">
+                    <i class="fas fa-angle-left"></i>
+                    <span class="visually-hidden">{% trans "Previous" %}</span>
+                </a>
+            </li>
+        {% else %}
+            <!-- <li class="page-item disabled">
+                <a class="page-link" href="#">
+                    <i class="fas fa-angle-left"></i>
+                    <span class="visually-hidden">Previous</span>
+                </a>
+            </li> -->
+        {% endif %}
+
+        {% for i in alter_articles.paginator.page_range %}
+            {% if alter_articles.number == i %}
+            <li class="page-item active">
+                <a class="page-link" href="?page={{ i }}{% if request.GET.q %}&q={{request.GET.q}}{% endif %}">{{ alter_articles.number }}</a>
+            </li>
+            {% elif i > alter_articles.number|add:'-5' and i < alter_articles.number|add:'5' %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ i }}{% if request.GET.q %}&q={{request.GET.q}}{% endif %}">{{ i }}</a>
+            </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if alter_articles.paginator.num_pages > alter_articles.number|add:'4' %}
+            <li><a class="page-link" href="?page={{ alter_articles.number|add:'5' }}{% if request.GET.q %}&q={{request.GET.q}}{% endif %}">&hellip;</a></li>
+        {% endif %}
+
+        {% if alter_articles.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ alter_articles.next_page_number }}{% if request.GET.q %}&q={{request.GET.q}}{% endif %}">
+                <i class="fas fa-angle-right"></i>
+                <span class="visually-hidden">{% trans "Next" %}</span>
+                </a>
+            </li>
+        {% else %}
+            <!-- <li class="page-item disabled">
+                <a class="page-link" href="#">
+                    <i class="fas fa-angle-right"></i>
+                    <span class="visually-hidden">Next</span>
+                </a>
+            </li> -->
+        {% endif %}
+    </ul>
+</nav>

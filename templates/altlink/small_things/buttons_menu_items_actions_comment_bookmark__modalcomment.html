@@ -1,0 +1,127 @@
+{% load class_tag %}
+{% load format_big_number_tag %}
+{% load verbose_name %}
+{% load watch_if_watched %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% if which_view == "AlterArticleDetailView" or which_view == "UrlArticleInfoDetailView" or which_view == "alter_article_list_view" or which_view == "profile_watchlist" or which_view == "user_detail" %}
+<!-- Modal Comment -->
+<div class="modal fade" id="modalComment-{{object|get_class_name}}-{{ object.pk }}" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable text-start" role="document">
+    <div class="modal-content">
+      <div class="modal-header mt-1 mb-1 pt-1 pb-1">
+        <div class="modal-title text-start h6">
+          {% trans "Comments to" %}:
+          <div class="breaking-word-all alter-color">{{object}}</div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="row text-center mt-0 mb-1 pt-0 pb-0 border-bottom">
+        <div class="container">
+          <a class="btn alter-buttons-menu button-reply-comment" id="buttonReplyComment" class-for-operation="{{object|get_class_name}}" pk="{{ object.pk }}" commentid="{{object|get_class_name}}-{{object.pk}}" objectid="{{object|get_class_name}}-{{object.pk}}"><ion-icon name="chatbubbles-outline" class="h5"></ion-icon> <span class="h5">{% trans "Reply: main thread" %}</span></a>
+        </div>
+      </div>
+      <div class="modal-header mt-0 mb-0 pt-0 pb-0 h5 link-long-warping">
+        <form class="container form-comment ms-0 me-0 pe-0 ps-0 mt-0 mb-1 pt-0 pb-0" objectid="{{object|get_class_name}}-{{object.pk}}">
+          {% csrf_token %}
+          <label class="h6 mb-1" id="mainthread" objectid="{{object|get_class_name}}-{{object.pk}}">{% trans "New comment: in main thread" %}</label>
+          <label class="h6 mb-1" id="reply" objectid="{{object|get_class_name}}-{{object.pk}}" style="display: none;">{% trans "Reply to" %}: </label>
+          <label class="h6 mb-1" id="replyto" objectid="{{object|get_class_name}}-{{object.pk}}" style="display: none;"></label>
+          <label class="h6 mb-1" id="edit" objectid="{{object|get_class_name}}-{{object.pk}}" style="display: none;">{% trans "Edit comment" %}: </label>
+          <label class="h6 mb-1" id="editto" objectid="{{object|get_class_name}}-{{object.pk}}" style="display: none;"></label>
+          {% include "altlink/small_things/content_comment_form_field_text.html" with content_comment_form=content_comment_form%}
+          <input type="hidden" name="class_for_operation" value="{{object|get_class_name}}" objectid="{{object|get_class_name}}-{{object.pk}}">
+          <input type="hidden" name="pk" value="{{ object.pk }}" objectid="{{object|get_class_name}}-{{object.pk}}">
+          <button type="submit" class="btn alter-btn btn-sm float-end form-button-submit-comment mt-1" id="buttonSubmitComment" objectid="{{object|get_class_name}}-{{object.pk}}">{% trans "Comment" %}</button>
+          <button type="submit" class="btn alter-btn btn-sm float-end form-button-submit-comment mt-1" id="buttonSubmitSaveChange" objectid="{{object|get_class_name}}-{{object.pk}}" style="display: none;">{% trans "Save changes" %}</button>
+        </form>
+      </div>
+      <div class="modal-body ms-0 me-0 ps-0 pe-0 mt-0 pt-0">
+        {% if object.comments %}
+          {% for comment in object.comments %}
+            {% if not comment.parent_comment %}
+              {% comment %} <div class="row"> {% endcomment %}
+                <div class="container border-bottom">
+                  {% comment %} <div class="row h7" >
+                    <div class="container">
+                      {{ comment.timestamp_created }} | 
+                      {{ comment.user }}
+                    </div>
+                  </div> {% endcomment %}
+                  <div class="d-flex flex-row pt-1 pb-1 ms-0 ps-0">
+                      <div class="m-0 p-0 border-end text-center">
+                          {% include "altlink/small_things/buttons_menu_items_actions_score_overall.html" with object=comment %}
+                          {% include "altlink/small_things/buttons_menu_items_actions_vote.html" with object=comment prev_view=request.get_full_path %}
+                          {% include "altlink/small_things/buttons_menu_items_actions_rest.html" with object=comment prev_view=request.get_full_path %}
+                      </div>
+                      <!-- Block object content -->
+                      <div class="ps-1 me-1 w-100">
+                        <div class="row p-0 m-0">
+                            <div class="container ps-0 mb-0 h5 breaking-word" commentid="{{comment|get_class_name}}-{{comment.pk}}">
+                              <span id="spanTextComment" commentid="{{comment|get_class_name}}-{{comment.pk}}">{{ comment.text|linebreaksbr }}</span>
+                              <a class="btn alter-buttons-menu button-reply-comment" id="buttonReplyComment" class-for-operation="{{comment|get_class_name}}" pk="{{ comment.pk }}" commentid="{{comment|get_class_name}}-{{comment.pk}}" objectid="{{object|get_class_name}}-{{object.pk}}" ><ion-icon name="chatbubbles-outline"></ion-icon> {% trans "Reply" %}</a>
+                            </div>
+                        </div>
+                        <div class="row p-0 m-0 justify-content-end comment-info" commentid="{{comment|get_class_name}}-{{comment.pk}}">
+                            {% include "altlink/small_things/user_edit_info.html" with object=comment %}
+                        </div>
+                        {% comment %} {% include "altlink/small_things/url_article_info_summary.html" with object=object %} {% endcomment %}
+                      </div>
+                      <!-- END - Block object content -->
+                  </div>
+                  {% if comment.comment_children %}
+                    <div class="row justify-content-end mb-3">
+                      <div class="col-11 m-0 p-0 pe-2">
+                        {% for comment_child in comment.comment_children %}
+                          <div class="container p-0 border-start border-top">
+                            {% comment %} <div class="row h7">
+                              <div class="container">
+                                {{ comment_child.timestamp_created }} | 
+                                {{ comment_child.user }}
+                              </div>
+                            </div> {% endcomment %}
+                            <div class="d-flex flex-row pt-1 pb-1 ms-0 ps-0">
+                                <div class="m-0 p-0 ps-1 border-end text-center">
+                                  {% include "altlink/small_things/buttons_menu_items_actions_score_overall.html" with object=comment_child %}
+                                  {% include "altlink/small_things/buttons_menu_items_actions_vote.html" with object=comment_child prev_view=request.get_full_path %}
+                                  {% include "altlink/small_things/buttons_menu_items_actions_rest.html" with object=comment_child prev_view=request.get_full_path %}
+                                </div>
+                                <!-- Block object content -->
+                                <div class="ps-1 me-1 w-100">
+                                  <div class="row p-0 m-0">
+                                    <div class="container ps-0 mb-0 h5 breaking-word" commentid="{{comment_child|get_class_name}}-{{comment_child.pk}}">
+                                      <span id="spanTextComment" commentid="{{comment_child|get_class_name}}-{{comment_child.pk}}">{{ comment_child.text|linebreaksbr }}</span>
+                                      <a class="btn alter-buttons-menu h7 button-reply-comment" id="buttonReplyComment" class-for-operation="{{comment|get_class_name}}" pk="{{ comment.pk }}" commentid="{{comment_child|get_class_name}}-{{comment_child.pk}}" objectid="{{object|get_class_name}}-{{object.pk}}" ><ion-icon name="chatbubbles-outline"></ion-icon> {% trans "Reply" %}</a>
+                                    </div>
+                                  </div>
+                                  <div class="row p-0 m-0 me-1 justify-content-end comment-info" commentid="{{comment_child|get_class_name}}-{{comment_child.pk}}">
+                                      {% include "altlink/small_things/user_edit_info.html" with object=comment_child %}
+                                  </div>
+                                  {% comment %} {% include "altlink/small_things/url_article_info_summary.html" with object=object %} {% endcomment %}
+                                </div>
+                                <!-- END - Block object content -->
+                            </div>
+                          </div>
+                          {% endfor %}
+                      </div>
+                    </div>
+                  {% endif %}
+                </div>                
+              {% comment %} </div> {% endcomment %}
+            {% endif %}
+          {% endfor %}
+        {% else %}
+        <div class="container">
+          <div class="row">
+            <div class="container">
+              {% trans "No comments" %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}

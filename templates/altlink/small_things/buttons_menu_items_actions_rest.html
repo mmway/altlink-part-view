@@ -1,0 +1,156 @@
+{% load class_tag %}
+{% load verbose_name %}
+{% load i18n %}
+
+
+<div class="d-flex flex-row flex-nowrap {% if object|get_class_name == "AlterArticle" %}justify-content-end{% endif %}">
+  <div class="ms-0 ps-0 pe-1" style="white-space:nowrap;">
+    <button class="btn btn-info alter-buttons-menu" type="button" data-bs-toggle="modal" data-bs-target="#modalStats{{object.slug}}" data-bs-content="{% trans "Stats" %}"><ion-icon name="pie-chart-outline" class="icon-buttons-menu-items"></ion-icon></button>
+    {% comment %} <button class="btn btn-info alter-buttons-menu" type="buttons" onclick="see('modalLink{{ object.slug }}');return false;" id="see-button">See</button> {% endcomment %}
+    <div class="dropdown dropdown-instance-menu">
+      <button class="btn btn-secondary alter-buttons-menu" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <ion-icon name="ellipsis-vertical-outline" class="icon-buttons-menu-items"></ion-icon>
+      </button>
+      <div class="dropdown-menu width-fit-content" aria-labelledby="dropdownMenu2">
+        {% if request.user == object.user %}
+          {% if object|get_class_name != "ContentComment" %}
+            <a href="{{ object.get_absolute_url_edit }}" class="dropdown-item btn btn-secondary alter-buttons-menu block" title="{% trans "Edit this" %} {{object|verbose_name}}"><ion-icon name="pencil-outline" class="icon-buttons-menu-items"></ion-icon> {% trans "Edit" %}</a>
+          {% else %}
+            <a class="dropdown-item btn btn-secondary alter-buttons-menu block" id="buttonEditComment" class-for-operation="ContentComment" pk="{{ object.pk }}" commentid="{{object|get_class_name}}-{{object.pk}}" objectid="{{object.contentownercomment.target|get_class_name}}-{{object.contentownercomment.target.pk}}" title="{% trans "Edit this" %} {{object|verbose_name}}"><ion-icon name="pencil-outline" class="icon-buttons-menu-items"></ion-icon> {% trans "Edit" %}</a>
+            {% comment %} <a class="btn alter-buttons-menu h7 button-reply-comment" id="buttonReplyComment" class-for-operation="ContentComment" pk="{{ object.pk }}" commentid="{{object|get_class_name}}-{{object.pk}}" ><ion-icon name="chatbubbles-outline" class="icon-buttons-menu-items"></ion-icon> {% trans "Reply" %}</a> {% endcomment %}
+          {% endif %}
+          {% comment %} <a href="{{ object.get_absolute_url_delete }}" class="dropdown-item btn btn-secondary alter-buttons-menu block" title="{% trans "Delete this" %} {{object|verbose_name}}"><ion-icon name="trash-outline" class="icon-buttons-menu-items"></ion-icon> {% trans "Delete" %}</a> {% endcomment %}
+          <a href="#" class="dropdown-item btn btn-secondary alter-buttons-menu block" title="{% trans "Delete this" %} {{object|verbose_name}}" id="buttonDelete" objectid="{{object|get_class_name}}-{{object.pk}}"><ion-icon name="trash-outline" class="icon-buttons-menu-items"></ion-icon> {% trans "Delete" %}</a>
+        {% endif %}
+        <button class="dropdown-item btn btn-secondary alter-buttons-menu block" type="button" data-bs-toggle="modal" data-bs-target="#modalFlag-{{object|get_class_name}}-{{ object.pk }}" title="{% trans "Report breaking rules" %}"><ion-icon name="flag-outline" class="icon-buttons-menu-items"></ion-icon> {% trans "Flag" %}</button>
+        {% if object|get_class_name == "UrlArticleInfo" %}
+          <button class="dropdown-item btn btn-secondary alter-buttons-menu block" type="button" data-bs-toggle="modal" data-bs-target="#modalLink{{object.slug}}" data-bs-content="Link"><ion-icon name="link-outline" class="icon-buttons-menu-items"></ion-icon> {% trans "Links" %}</button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal Link -->
+<div class="modal fade" id="modalLink{{ object.slug }}" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm text-start" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        {{object|verbose_name}}
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body ms-3 me-3">
+        {% if object|get_class_name == 'UrlArticleInfo' %}
+          <div class="row pb-3">
+          <a href="{{ object.get_absolute_url }}" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="{% trans "Opens in new tab" %}">{% trans "See Alterlink" %} <ion-icon name="open-outline" class="icon-buttons-menu-items"></ion-icon></a>
+          </div>
+        {% endif %}
+
+        {% comment %} <div class="row pb-3">
+          <a href="{% if object|get_class_name == "AlterArticle" or object|get_class_name == "UrlArticleInfo" %}{{ object.get_absolute_url }}{% else %}{{request.get_full_path}}{% endif %}#modalComment-{{object|get_class_name}}-{{ object.pk }}" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="{% trans "Opens in new tab" %}">{% trans "Enter discussion" %} <ion-icon name="open-outline" class="icon-buttons-menu-items"></ion-icon></a>
+        </div> {% endcomment %}
+
+        {% comment %} <div class="row pb-0">
+          {% trans "Copy direct link to discussion:" %}
+        </div>
+        <div class="row pt-0 pb-3 {% if object|get_class_name == "UrlArticleInfo" %}border-bottom{% endif %}">
+          <div class="bg-light">
+            <small>{% if object|get_class_name == "AlterArticle" or object|get_class_name == "UrlArticleInfo" %}{{ object.get_absolute_url }}{% else %}{{request.get_full_path}}{% endif %}#modalComment-{{object|get_class_name}}-{{ object.pk }}</small>
+          </div>
+        </div> {% endcomment %}
+
+        {% if object|get_class_name == "UrlArticleInfo" %}
+          {% if object.quotation_best %}
+            <div class="row pt-3 pb-3">
+              <a href="{{ object.url_quotation_best }}" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="{% trans "Opens in new tab" %}">{% trans "AlterLink - best quotation (if added) - open link " %}<ion-icon name="open-outline" class="icon-buttons-menu-items"></ion-icon></a>
+            </div>
+          {% endif %}
+
+          <div class="row pt-3 pb-3">
+              <a href="{% url 'altlink:home' %}?q={{object.url}}" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="{% trans "Opens in new tab" %}">{% trans "See what other AlterArticles have this AlterLink" %}<ion-icon name="open-outline" class="icon-buttons-menu-items"></ion-icon></a>
+          </div>
+
+          {% comment %} TODO #13 {% endcomment %}
+
+          {% comment %} <div class="row pb-0">
+            {% trans "AlterLink best quotation:" %}
+          </div>
+          <div class="row pt-0">
+            <div class="bg-light">
+              <small>
+                {% if object.quotation_best %}
+                  {{ object.quotation_best.text}}
+                {% else %}
+                  {% trans "Nobody have added quotation / place to start reading. You can add some!." %}
+                {% endif %}
+              </small>
+            </div>
+          </div> {% endcomment %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal stats -->
+<div class="modal fade" id="modalStats{{ object.slug }}" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm text-start" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        {% comment %} {{object|verbose_name}} {% endcomment %}
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body ms-3 me-3">
+        {% if object|get_class_name == 'UrlArticleInfo' %}
+          <a href="{% url 'altlink:home' %}?q={{object.url}}" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="{% trans "Opens in new tab" %}">
+            {% trans "Link exists in other AlterArticles" %}<ion-icon name="open-outline" class="icon-buttons-menu-items"></ion-icon>
+          </a>: {{object.url_base.times_exists_in_alter_articles}} {% if object.url_base.times_exists_in_alter_articles > 1 %}{% trans "time" context "number of time" %} {% else %} {% trans "times" context "number of times" %} {% endif %}
+          <br><br>
+          <a href="{{ object.get_absolute_url }}" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="{% trans "Opens in new tab" %}">{% trans "See more info about link" %} <ion-icon name="open-outline" class="icon-buttons-menu-items"></ion-icon></a>
+          <br><br>
+        {% endif %}
+
+        {% comment %} {% if object|get_class_name == 'UrlArticleInfo' %}
+          Tyle razy otworzono zewnętrzny link: {{object.url_base.entered_counter}}
+          W tylu AlterArtykułach występuje ten link: {{object.url_base.times_exists_in_alter_articles}}
+        {% else %}
+        {% endcomment %}
+        {% if object|get_class_name == 'AlterArticle' %}
+          {% trans "Number of AlterArticle views" %}: {{object.entered_counter}}
+          <br><br>
+        {% endif %} 
+
+        {% comment %} TO DO {% endcomment %}
+        {% trans "Sum of votes" %}: {{object.vote_score}}
+        <br>
+        {% trans "Voted as interesting" %}: {{object.vote_up_counter}}
+        <br>
+        {% trans "Voted as uninteresting" %}: {{object.vote_down_counter}}
+        <br><br>
+        {% if object|get_class_name == 'AlterArticle' %}
+          {% trans "Hot score" %}: {{object.vote_hot}}
+          <br>
+        {% endif %}
+        {% trans "Number of comments" %}: {{object.comments|length}}
+        <br><br>
+
+        {% if object|get_class_name == 'UrlArticleInfo' %}
+            {% trans "Times opened external link" %}: {{object.url_base.entered_counter}}
+            <br><br>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+{% comment %} console.log(document.getElementById('modalStatsdjangoproject-com-en-3-1-ref-models-querysets-')) {% endcomment %}
+{% comment %} function see(modal_temp){
+  $("#"+modal_temp).modal();
+} {% endcomment %}
+
+
+</script>

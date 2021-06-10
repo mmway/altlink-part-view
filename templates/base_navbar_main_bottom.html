@@ -1,0 +1,191 @@
+{% comment %} # TO DO - horizontal multilever menu - like in Macaw program first visual version of Alter-link.com
+https://stackoverflow.com/questions/26397017/bootstrap-horizontal-multilevel-menu 
+https://www.bootply.com/2v2U3CWmhQ
+https://www.bootply.com/7DympNnGuF#
+https://www.bootply.com/125557
+{% endcomment %}
+{% load static %}
+{% load i18n %}
+{% load verbose_name %}
+
+{% comment %} 
+navbar color changer 
+https://stackoverflow.com/questions/18529274/change-navbar-color-in-twitter-bootstrap
+https://work.smarchal.com/twbscolor/css/e74c3cc0392becf0f1ffbbbc0 
+{% endcomment %}
+
+<nav class="navbar fixed-bottom navbar-expand-md border border-bottom-0 pt-0 pb-0 ps-2 pe-2 ps-md-3 pe-md-3 ps-lg-5 pe-lg-5">
+<div class="container-fluid">
+    <div class="d-flex mx-auto ms-auto-md order-2 order-md-1">
+        <div class="navbar-brand btn-group dropup alter-shadow-sides pt-0 pb-0 m-0 ms-2 me-2">
+            <a class="btn alter-btn-brand pe-1" href="{% url 'altlink:home' %}">
+                <img style="max-height:26px;height:auto;" src="{% static 'img/alter_link__logo_00625.png' %}"/>
+            </a>
+            <button type="button" class="btn dropdown-toggle alter-link-color alter-btn-brand dropdown-toggle-split" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown</span>
+            </button>
+            {% comment %} <div class="nav-link dropdown-toggle alter-color" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                
+            </div> {% endcomment %}
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <ul class="dropdown-header text-center">{% trans "AlterView" %}</ul>
+                <ul class="dropdown-divider"></ul>
+                <a class="dropdown-item" href="#"><ion-icon name="people-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "About Us" %}</span></a>
+                <a class="dropdown-item" href="#"><ion-icon name="book-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "AlterRules Book" %}</span></a>
+                <a class="dropdown-item" href="#"><ion-icon name="checkmark-done-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "Factchecking" %}</span></a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#"><ion-icon name="git-network-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "AlterBlog" %}</span></a>
+                <div class="dropdown-divider"></div>
+                </strong><big><a class="dropdown-item" href="{% url 'altlink:home' %}"><ion-icon name="home-outline" class="icon-buttons-navbar-items"></ion-icon>   <ion-icon name="newspaper-outline" class="icon-buttons-navbar-items"></ion-icon><span>  {% trans "Info" %} alter-link.com</span></a></big></strong>
+                </strong><big><a class="dropdown-item" href="{% url 'altlink:home' %}"><ion-icon name="home-outline" class="icon-buttons-navbar-items"></ion-icon>   <ion-icon name="cart-outline" class="icon-buttons-navbar-items"></ion-icon><span>  {% trans "Products" %} alter-link.com</span></a></big></strong>
+            </ul>
+        </div>
+        <button class="navbar-toggler ps-2 pe-2" type="button" data-bs-toggle="collapse" data-bs-target=".dual-collapse2">
+            <i class="fas fa-bars alter-color"></i>
+        </button>
+    </div>
+    <div class="navbar-collapse collapse order-0 order-md-0 dual-collapse2">
+        <ul class="navbar-nav me-auto">
+            <div class="nav-item pe-1">
+                <form class="text-end" action="{% url 'set_language' %}" method="post">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{request.get_full_path}}" />
+
+                    <select class="form alter-btn ps-1 pe-1 btn alter-btn w-100" name="language" style="width: auto !important;" onchange="this.form.submit()">
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% get_available_languages as LANGUAGES %}
+                    {% get_language_info_list for LANGUAGES as languages %}
+                    {% for language in languages %}
+                        {% if language.code == "en" or language.code == "pl" %}
+                            <option
+                            value="{{ language.code }}"
+                            {% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}
+                            data-content='<img src="/static/images/flags/{{ language.code }}.gif"></span>
+                            <span style="display:inline-block; width:100px; padding-left: 10px; text-shadow:none">
+                            {{ language.name_local }}
+                            <!-- span style="color:#999;">&nbsp;[{{ language.code }}]</span -->
+                            </span>'>
+                            {{ language.code|upper }}
+                        </option>
+                        {% endif %}
+                    {% endfor %}
+                    </select>
+                </form>
+            </div>
+            <li class="nav-item">
+                <a class="nav-link btn alter-btn" href="#">{% trans "Donate" %}</a>
+            </li>
+            <li class="nav-item dropup">
+                <a class="nav-link btn alter-btn dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {% trans "Contact" %}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="#"><i class="fas fa-ad"></i> {% trans "Ads here" %}</a>
+                    <a class="dropdown-item" href="#"><ion-icon name="git-pull-request-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "Cooperation" %}</span></a>
+                    <a class="dropdown-item" href="#"><ion-icon name="newspaper-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "Press" %}</span></a>
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-item">
+                        <a href="https://www.facebook.com/alterlink.znajdz.alternatywe/" class="btn" aria-label="Connect to Facebook"><ion-icon name="logo-facebook" class="icon-buttons-navbar-items"></ion-icon></a>
+                        <a href="#" class="btn" aria-label="Connect to Twitter"><ion-icon name="logo-twitter" class="icon-buttons-navbar-items"></ion-icon></a>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#"><ion-icon name="pencil-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "Write us" %}</span></a>
+                </div>
+            </li>
+            <li class="nav-item dropup">
+                <a class="nav-link btn alter-btn dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {% trans "AlterSections" %}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="{% url 'altlink:home-category' category_article='news' %}"><ion-icon name="newspaper-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "News" %}</span></a>
+                    <a class="dropdown-item" href="{% url 'altlink:home-category' category_article='world' %}"><ion-icon name="earth-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "World" %}</span></a>
+                    <a class="dropdown-item" href="{% url 'altlink:home-category' category_article='poland' %}"><ion-icon name="flag-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "Poland" %}</span></a>
+                    <a class="dropdown-item" href="{% url 'altlink:home-category' category_article='tech' %}"><ion-icon name="hardware-chip-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "Tech" %}</span></a>
+                    <a class="dropdown-item" href="{% url 'altlink:home-category' category_article='business' %}"><ion-icon name="bar-chart-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "Business" %}</span></a>
+                    <a class="dropdown-item" href="{% url 'altlink:home-category' category_article='politics' %}"><i class="fas fa-person-booth alter-icon" class="icon-buttons-navbar-items"></i><span> {% trans "Politics" %}</span></a>                    
+                    <a class="dropdown-item" href="{% url 'altlink:home-category' category_article='sport' %}"><ion-icon name="bicycle-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "Sport" %}</span></a>
+                    <a class="dropdown-item" href="{% url 'altlink:home-category' category_article='crypto' %}"><ion-icon name="logo-bitcoin" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "Crypto" %}</span></a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'altlink:home-category' category_article='health' %}"><ion-icon name="pulse-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "Health" %}</span></a>
+                    <a class="dropdown-item" href="{% url 'altlink:home-category' category_article='food' %}"><ion-icon name="pizza-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "Food" %}</span></a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'altlink:home-category' category_article='history' %}"><ion-icon name="book-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "History" %}</span></a>
+                    <a class="dropdown-item" href="{% url 'altlink:home-category' category_article='culture' %}"><ion-icon name="film-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "Culture" %}</span></a>
+                    <a class="dropdown-item" href="{% url 'altlink:home-category' category_article='music' %}"><ion-icon name="musical-notes-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "Music" %}</span></a>
+                    <a class="dropdown-item" href="{% url 'altlink:home-category' category_article='movies' %}"><ion-icon name="videocam-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "Movies" %}</span></a>
+                    <a class="dropdown-item" href="{% url 'altlink:home-category' category_article='fun' %}"><ion-icon name="happy-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "Funny" %}</span></a>
+                    <a class="dropdown-item" href="{% url 'altlink:home-category' category_article='gossip' %}"><ion-icon name="ear-outline" class="icon-buttons-navbar-items"></ion-icon><span> {% trans "Gossip" %}</span></a>
+                    {% comment %} <div class="dropdown-divider"></div> {% endcomment %}
+                    {% comment %} <a class="dropdown-item" href="{% url 'altlink:home-category' category_article='hardware' %}"><ion-icon name="hardware-chip-outline"></ion-icon><span> {% trans "Hardware" %}</span></a>
+                    <a class="dropdown-item" href="{% url 'altlink:home-category' category_article='software' %}"><ion-icon name="desktop-outline"></ion-icon><span> {% trans "Software" %}
+                    <div class="dropdown-divider"></div> {% endcomment %}
+                    {% comment %} <a class="dropdown-item" href="{% url 'altlink:home-category' category_article='product' %}"><ion-icon name="cube-outline"></ion-icon><span> {% trans "Product" %}</span></a>
+                    <div class="dropdown-divider"></div> {% endcomment %}
+                    {% comment %} <a class="dropdown-item" href="#"><ion-icon name="trending-up-outline"></ion-icon><span> {% trans "Trends" %}</span></a>
+                    <a class="dropdown-item" href="#"><ion-icon name="flame-outline"></ion-icon><span> {% trans "Hot" %}</span></a> {% endcomment %}
+                    {% comment %} <div class="dropdown-divider"></div>
+                    <strong><big><a class="dropdown-item" href="www.alter-link.com/alter-products/"><ion-icon name="git-network-outline"></ion-icon><span> {% trans "Alternatives for products" %}</span></a></big></strong> {% endcomment %}
+                </div>
+            </li>
+            {% comment %} <!-- TODO Block alternatywne produkty kategorie -->
+            <li class="nav-item dropup">
+                <a class="nav-link btn alter-btn dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    AlterProdukty
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="#"><ion-icon name="bicycle-outline" class="icon-buttons-navbar-items"></ion-icon>Sport</a>
+                    <a class="dropdown-item" href="#"><ion-icon name="hardware-chip-outline" class="icon-buttons-navbar-items"></ion-icon><span> Technologie</span></a>
+                    <a class="dropdown-item" href="#"><ion-icon name="pulse-outline" class="icon-buttons-navbar-items"></ion-icon><span> Zdrowie</span></a>
+                    <a class="dropdown-item" href="#"><ion-icon name="pulse-outline" class="icon-buttons-navbar-items"></ion-icon><span> Usługi</span></a>
+                    <a class="dropdown-item" href="#"><ion-icon name="pulse-outline" class="icon-buttons-navbar-items"></ion-icon><span> Oprogramowanie</span></a>
+                </div>
+            </li>
+            <!-- END - TODO Block alternatywne produkty kategorie --> {% endcomment %}
+            <li class="nav-item">
+                <a class="nav-link btn alter-btn" href="{% url 'altlink:alter-article-create' %}">{% trans "New&nbsp;Article" %}</a>
+            </li>
+        </ul>
+    </div>
+    <div class="d-flex ms-auto order-3 order-md-2 ms-1">
+        <div class="nav-item navbar-search dropup">
+            <div class="nav-link btn alter-btn ps-1 pe-1" id="navbarDropdownSearchForm" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <ion-icon name="search-outline" style="font-size:24px !important;" class="icon-buttons-navbar-items"></ion-icon>
+            </div>
+            <div class="dropdown-menu dropdown-menu-end p-1" aria-labelledby="navbarDropdownSearchForm">
+                <div class="container"  style="min-width: 65vw;">
+                    <form class="d-flex d-inline-flex w-100" action="{% url 'altlink:home' %}" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="q" placeholder="{% trans "Search alter-link.com" %}" aria-label="Search" aria-describedby="button-navbar_search">
+                        <button class="btn btn-outline-alter" type="submit" id="button-navbar_search">{% trans "Search" %}</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex ms-auto order-4 order-md-4 ms-1" style="max-width: 60px;">
+        {% comment %} <ul class="navbar-nav ms-auto"> {% endcomment %}
+            {% if request.user.is_authenticated %}
+                <div class="nav-item dropup">
+                    <div class="nav-link btn alter-btn ps-1 pe-1" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <ion-icon name="person-outline" style="font-size:24px !important;" class="icon-buttons-navbar-items"></ion-icon>
+                    </div>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'useralter:profile' %}"><ion-icon name="person-outline" class="icon-buttons-navbar-items"></ion-icon>{{request.user}} {% trans "profile" %}</a>
+                        <a class="dropdown-item" href="{% url 'altlink:watchlist' %}"><ion-icon name="bookmark-outline" class="icon-buttons-navbar-items"></ion-icon>{% trans "Watched alternatives" %}</a>
+                        {% comment %} <a class="dropdown-item" href="#"><ion-icon name="settings-outline" class="icon-buttons-navbar-items"></ion-icon></ion-icon>Ustawienia</a> {% endcomment %}
+                        {% if user.is_superuser %}
+                        <a class="dropdown-item" href="{% url 'admin:login' %}"><ion-icon name="person-outline" class="icon-buttons-navbar-items"></ion-icon>{% trans "Admin panel" %}</a>
+                        {% endif %}
+                        <a class="dropdown-item" href="{% url 'useralter:logout' %}?next={{request.path}}"><ion-icon name="log-out-outline" class="icon-buttons-navbar-items"></ion-icon>{% trans "Log out" %}</a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="nav-item">
+                    <a class="nav-link btn alter-btn ps-1 pe-1" href="{% url 'useralter:login' %}?next={{request.path}}">{% trans "Log&nbsp;in" %}</a>
+                </div>
+            {% endif %}
+        {% comment %} </u1> {% endcomment %}
+    </div>
+</div>
+</nav>

@@ -1,0 +1,7 @@
+{% load i18n %}
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class='btn btn-danger' style:'display: inline-block'>{% trans "Delete" %}</button>
+    {% include "altlink/small_things/buttons_cancel.html" with url_cancel=url_cancel %}
+</form>

@@ -1,0 +1,130 @@
+{% comment %} # TO DO - horizontal multilever menu - like in Macaw program first visual version of Alter-link.com
+https://stackoverflow.com/questions/26397017/bootstrap-horizontal-multilevel-menu 
+https://www.bootply.com/2v2U3CWmhQ
+https://www.bootply.com/7DympNnGuF#
+https://www.bootply.com/125557
+{% endcomment %}
+{% load static %}
+{% load i18n %}
+{% load verbose_name %}
+
+{% comment %} 
+navbar color changer 
+https://stackoverflow.com/questions/18529274/change-navbar-color-in-twitter-bootstrap
+https://work.smarchal.com/twbscolor/css/e74c3cc0392becf0f1ffbbbc0 
+{% endcomment %}
+
+<nav class="navbar fixed-bottom navbar-expand-md border border-bottom-0">
+    <div class="mx-auto ms-auto-md order-2 order-md-1">
+        <span class="navbar-brand dropup">
+            <a class="nav-link dropdown-toggle alter-color" href="{% url 'altlink:home' %}" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img style="max-height:26px;height:auto;" src="{% static 'img/alter_link__logo_00625.png' %}"/>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <div class="dropdown-header text-center">AlterMyśl</div>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#"><ion-icon name="people-outline"></ion-icon><span> O nas</span></a>
+                <a class="dropdown-item" href="#"><ion-icon name="book-outline"></ion-icon><span> Księga AlterZasad</span></a>
+                <a class="dropdown-item" href="#"><ion-icon name="checkmark-done-outline"></ion-icon><span> Sprawdzanie informacji</span></a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#"><ion-icon name="git-network-outline"></ion-icon><span> AlterBlog</span></a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'altlink:home' %}"><ion-icon name="home-outline"></ion-icon><span> alter-link.com</span></a>
+                <a class="dropdown-item" href="{% url 'altlink:home' %}"><ion-icon name="home-outline"></ion-icon><span> alter-link.com</span></a>
+            </div>
+        </span>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".dual-collapse2">
+            <i class="fas fa-bars alter-color"></i>
+            {% comment %} <span class="navbar-toggler-icon"></span> {% endcomment %}
+        </button>
+    </div>
+    <div class="ms-auto order-3 order-md-2">
+        <span class="navbar-search dropup btn alter-color">
+            <ion-icon name="search-outline" style="font-size:24px !important;"></ion-icon>
+        </span>
+    </div>
+    <div class="navbar-collapse collapse order-0 order-md-0 dual-collapse2">
+        <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+                <a class="nav-link btn alter-btn" href="#">Wesprzyj</a>
+            </li>
+            <li class="nav-item dropup">
+                <a class="nav-link btn alter-btn dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Kontakt
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">                    
+                    <a class="dropdown-item" href="#"><i class="fas fa-ad"></i> Reklama</a>
+                    <a class="dropdown-item" href="#"><ion-icon name="git-pull-request-outline"></ion-icon><span> Współpraca</span></a>
+                    <a class="dropdown-item" href="#"><ion-icon name="newspaper-outline"></ion-icon><span> Prasa</span></a>
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-item">
+                        <a href="https://www.facebook.com/alterlink.znajdz.alternatywe/" class="btn" aria-label="Connect to Facebook"><ion-icon name="logo-facebook"></ion-icon></a>
+                        <a href="#" class="btn" aria-label="Connect to Twitter"><ion-icon name="logo-twitter"></ion-icon></a>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#"><ion-icon name="pencil-outline"></ion-icon><span> Napisz do nas</span></a>
+                </div>
+            </li>
+            <li class="nav-item dropup">
+                <a class="nav-link btn alter-btn dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    AlterDziały
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="#"><ion-icon name="flag-outline"></ion-icon><span> Polska</span></a>
+                    <a class="dropdown-item" href="#"><ion-icon name="earth-outline"></ion-icon><span> Świat</span></a>
+                    <a class="dropdown-item" href="#"><ion-icon name="bicycle-outline"></ion-icon><span> Sport</span></a>
+                    <a class="dropdown-item" href="#"><ion-icon name="logo-bitcoin"></ion-icon><span> Krypto</span></a>
+                    <a class="dropdown-item" href="#"><ion-icon name="hardware-chip-outline"></ion-icon><span> Technologie</span></a>
+                    <a class="dropdown-item" href="#"><i class="fas fa-person-booth alter-icon"></i><span> Polityka</span></a>
+                    <a class="dropdown-item" href="#"><ion-icon name="bar-chart-outline"></ion-icon><span> Biznes</span></a>
+                    <a class="dropdown-item" href="#"><ion-icon name="pulse-outline"></ion-icon><span> Zdrowie</span></a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#"><ion-icon name="trending-up-outline"></ion-icon><span> Trendy AA</span></a>
+                    <a class="dropdown-item" href="#"><ion-icon name="flame-outline"></ion-icon><span> Gorące AA</span>/a>
+                    <div class="dropdown-divider"></div>
+                    <strong><big><a class="dropdown-item" href="www.alter-link.com/alter-products/"><ion-icon name="git-network-outline"></ion-icon><span> Alternatywy Produktów</span></a></big></strong>
+                </div>
+            </li>
+
+            {% comment %} <!-- TODO Block alternatywne produkty kategorie -->
+            <li class="nav-item dropup">
+                <a class="nav-link btn alter-btn dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    AlterProdukty
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="#"><ion-icon name="bicycle-outline"></ion-icon>Sport</a>
+                    <a class="dropdown-item" href="#"><ion-icon name="hardware-chip-outline"></ion-icon><span> Technologie</span></a>
+                    <a class="dropdown-item" href="#"><ion-icon name="pulse-outline"></ion-icon><span> Zdrowie</span></a>
+                    <a class="dropdown-item" href="#"><ion-icon name="pulse-outline"></ion-icon><span> Usługi</span></a>
+                    <a class="dropdown-item" href="#"><ion-icon name="pulse-outline"></ion-icon><span> Oprogramowanie</span></a>
+                </div>
+            </li>
+            <!-- END - TODO Block alternatywne produkty kategorie --> {% endcomment %}
+            <li class="nav-item">
+                <a class="nav-link btn alter-btn" href="{% url 'altlink:alter-article-create' %}">+Utwórz AA</a>
+            </li>
+        </ul>
+    </div>
+    <div class="navbar-collapse collapse order-1 order-md-3 dual-collapse2">
+        <ul class="navbar-nav ms-auto">
+            {% if request.user.is_authenticated %}
+                <li class="nav-item dropup">
+                    <a class="nav-link btn alter-btn dropdown-toggle" href="{% url 'admin:login' %}" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profil</a>
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'useralter:profile' %}"><ion-icon name="person-outline"></ion-icon>{{request.user}} profil</a>
+                        <a class="dropdown-item" href="#"><ion-icon name="bookmark-outline"></ion-icon>Zapisane AA</a>
+                        {% comment %} <a class="dropdown-item" href="#"><ion-icon name="settings-outline"></ion-icon></ion-icon>Ustawienia</a> {% endcomment %}
+                        {% if user.is_superuser %}
+                        <a class="dropdown-item" href="{% url 'admin:login' %}"><ion-icon name="person-outline"></ion-icon>Admin panel</a>
+                        <a class="dropdown-item" href="{% url 'useralter:logout' %}?next={{request.path}}"><ion-icon name="log-out-outline"></ion-icon>Wyloguj</a>
+                        {% endif %}
+                    </div>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link btn alter-btn" href="{% url 'useralter:login' %}?next={{request.path}}">Zaloguj</a>
+                </li>
+            {% endif %}
+        </u1>
+    </div>
+</nav>

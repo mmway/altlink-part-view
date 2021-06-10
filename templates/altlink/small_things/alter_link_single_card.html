@@ -1,0 +1,55 @@
+{% load i18n %}
+{% load crispy_forms_tags %} 
+{% load class_tag %}
+{% load verbose_name %}
+
+<div class="container-fluid p-0 ps-1 pe-1">
+    <div class="d-flex flex-row pt-1 pb-1 ms-0 ps-0">
+        <div class="m-0 p-0 border-end">
+            {% include "altlink/small_things/buttons_menu_items_actions_score_overall.html" with object=object %}
+            {% include "altlink/small_things/buttons_menu_items_actions_vote.html" with object=object prev_view=request.get_full_path %}
+            {% include "altlink/small_things/buttons_menu_items_actions_comment_bookmark.html" with object=object prev_view=request.get_full_path %}
+            {% include "altlink/small_things/buttons_menu_items_actions_rest.html" with object=object prev_view=request.get_full_path %}
+            {% include "altlink/small_things/buttons_menu_items_actions_comment.html" with object=object prev_view=request.get_full_path %}
+        </div>
+        <!-- Block object content -->
+        <div class="ps-1 me-1 w-100">
+            {% if object|get_class_name == "UrlArticleInfo" %}
+                    <div class="row p-0 m-0">
+                        <div class="container ps-0 mb-0 link-long-warping" id="{{ object.url_base.slug }}">
+                            {% include "altlink/small_things/href_open_link.html" with slug=object.url_base.slug goto=object.url_quotation_best class_entered=object.url_base|get_class_name text=object.url|truncatechars:100 %}
+                            {% include "altlink/small_things/buttons_permalink.html" with url_page=object.url url_section=object.url_base.slug %}
+                        </div>
+                    </div>
+                    <div class="row p-0 m-0 pb-1 border-bottom justify-content-end">
+                        <div class="p-0 m-0">
+                            {% include "altlink/small_things/user_edit_info.html" with object=object %}
+                        </div>
+                    </div>
+                    {% include "altlink/small_things/url_article_info_summary.html" with object=object %}
+                    
+            {% elif object|get_class_name == "ContentSummary" %}
+                    <div class="row p-0 m-0">
+                        <div class="container ps-0 mb-0 link-long-warping" id="{{ object.pk }}">
+                            {% include "altlink/small_things/content_summary_summary.html" with object=object %}
+                            {% include "altlink/small_things/buttons_permalink.html" with url_page=object.url url_section=object.pk %}
+                            <div class="row p-0 m-0 me-1 justify-content-end">
+                                {% include "altlink/small_things/user_edit_info.html" with object=object %}
+                            </div>
+                        </div>
+                    </div>
+            {% elif object|get_class_name == "ContentQuotation" %}
+                    <div class="row p-0 m-0">
+                        <div class="container ps-0 mb-0 link-long-warping" id="{{ object.pk }}">
+                            {% include "altlink/small_things/content_quotation_summary.html" with object=object %}
+                            {% include "altlink/small_things/buttons_permalink.html" with url_page=object.url url_section=object.pk %}
+                            <div class="row p-0 m-0 me-1 justify-content-end">
+                                {% include "altlink/small_things/user_edit_info.html" with object=object %}
+                            </div>
+                        </div>
+                    </div>
+            {% endif %}
+        </div>
+        <!-- END - Block object content -->
+    </div>
+</div>
